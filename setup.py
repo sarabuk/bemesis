@@ -1,9 +1,20 @@
 
 from setuptools import setup
+
+install_requires = [
+    'pandas >= 0.14',
+    'numpy >= 1.8',
+    'time',
+    'collections',
+    'simplejson',
+    'paramiko
+]
+
+
 setup(
   name = 'bemesis',
   packages = ['bemesis'], # this must be the same as the name above
-  version = '0.5',
+  version = '0.6',
   description = 'test lib',
   author = 'bemesis team',
   author_email = 'genesis@genesis.com',
@@ -11,5 +22,5 @@ setup(
   download_url = 'https://github.com/sarabuk/bemesis/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['testing', 'example'],
   py_modules=['bemesis'], # arbitrary keywords
+  install_requires=install_requires,
   classifiers = [], )
-
