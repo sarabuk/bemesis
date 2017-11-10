@@ -1,5 +1,5 @@
 
-from setuptools import setup
+from distutils.core import setup
 setup(
   name = 'genesis',
   packages = ['genesis'], # this must be the same as the name above
