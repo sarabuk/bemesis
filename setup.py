@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
   name = 'bemesis',
   packages = ['bemesis'], # this must be the same as the name above
-  version = '0.4',
+  version = '0.5',
   description = 'test lib',
   author = 'bemesis team',
   author_email = 'genesis@genesis.com',
