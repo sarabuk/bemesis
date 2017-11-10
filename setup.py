@@ -7,7 +7,7 @@ install_requires = [
     'time',
     'collections',
     'simplejson',
-    'paramiko
+    'paramiko'
 ]
 
 
