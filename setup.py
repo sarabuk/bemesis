@@ -1,9 +1,5 @@
 
-# coding: utf-8
-
-# In[ ]:
-
-from distutils.core import setup
+from setuptools import setup
 setup(
   name = 'genesis',
   packages = ['genesis'], # this must be the same as the name above
