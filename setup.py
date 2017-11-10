@@ -10,9 +10,9 @@ setup(
   version = '0.1',
   description = 'test lib',
   author = 'genesis team',
-  author_email = 'gensis@gensis.com',
-  url = 'https://github.com/sarabuk/genesis-', # use the URL to the github repo
-  download_url = 'https://github.com/sarabuk/genesis-/archive/0.1.tar.gz', # I'll explain this in a second
+  author_email = 'genesis@genesis.com',
+  url = 'https://github.com/sarabuk/genesis', # use the URL to the github repo
+  download_url = 'https://github.com/sarabuk/genesis/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['testing', 'example'], # arbitrary keywords
-  classifiers = [], )
+  classifiers = [] )
 
