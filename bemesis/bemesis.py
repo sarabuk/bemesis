@@ -10,50 +10,43 @@ import numpy as np
 import simplejson as json
 import collections
 import time
-import logger 
+ 
 
 def getcsv(host, uname, pword, dataset, date, filecopypath):
-        logging.basicConfig(filename='log_filename.txt', level=logging.DEBUG, 
-                            format='%(asctime)s - %(levelname)s - %(message)s')
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys() 
         ssh.connect(hostname=host, username=uname, password=pword)
-        logging.debug('SSH Connection Made')
+        
     
         sftp = ssh.open_sftp()
-        logging.debug('SFTP Open')
+      
     
         file_remote='/Users/paul/data/'+ dataset + '_'+ date + '.csv'
     
         sftp.get(file_remote, filecopypath)
 
         sftp.close()
-        logging.debug('SFTP Closed')
+        
         ssh.close()
-        logging.debug('SSH Connection Closed')
+   
         
 
 def getjson(host, uname, pword, dataset, date, filecopypath):
         
-        logging.basicConfig(filename='log.txt', level=logging.DEBUG, 
-                            format='%(asctime)s - %(levelname)s - %(message)s')
-
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys() 
         ssh.connect(hostname=host, username=uname, password=pword)
-        logging.debug('SSH Connection Made')
-        
+
         sftp = ssh.open_sftp()
-        logging.debug('SFTP Open')
+       
     
         file_remote='/Users/paul/data/'+ dataset + date + '.json'
     
         sftp.get(file_remote, filecopypath)
 
         sftp.close()
-        logging.debug('SFTP Closed')
+        
         ssh.close()
-        logging.debug('SSH Connection Closed')
         
 def loadjson(f):
     with open (f) as f:
