@@ -22,7 +22,7 @@ def getcsv(host, uname, pword, dataset, date, filecopypath):
         sftp = ssh.open_sftp()
         logging.debug('SFTP Open')
     
-        file_remote='/Users/paul/data/'+ dataset + '_'+ date + '.csv'
+        file_remote='outgoing/'+ dataset + '_'+ date + '.csv'
     
         sftp.get(file_remote, filecopypath)
 
@@ -42,7 +42,7 @@ def getjson(host, uname, pword, dataset, date, filecopypath):
         sftp = ssh.open_sftp()
        
     
-        file_remote='/Users/paul/data/'+ dataset + date + '.json'
+        file_remote='outgoing/'+ dataset + date + '.json'
     
         sftp.get(file_remote, filecopypath)
 
