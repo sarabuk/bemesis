@@ -4,17 +4,15 @@ from setuptools import setup
 install_requires = [
     'pandas >= 0.14',
     'numpy >= 1.8',
-    'time',
-    'collections',
-    'simplejson',
-    'paramiko'
+    'simplejson >= 3.11',
+    'paramiko >= 2.3'
 ]
 
 
 setup(
   name = 'bemesis',
   packages = ['bemesis'], # this must be the same as the name above
-  version = '0.6',
+  version = '0.7',
   description = 'test lib',
   author = 'bemesis team',
   author_email = 'genesis@genesis.com',
