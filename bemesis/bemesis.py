@@ -10,7 +10,7 @@ import numpy as np
 import simplejson as json
 import collections
 import time
-import logger 
+
 
 def getcsv(host, uname, pword, dataset, date, filecopypath):
         
