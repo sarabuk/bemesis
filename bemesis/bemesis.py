@@ -20,7 +20,7 @@ def getcsv(host, uname, pword, dataset, date, filecopypath):
        
     
         sftp = ssh.open_sftp()
-        logging.debug('SFTP Open')
+     
     
         file_remote='outgoing/'+ dataset + '_'+ date + '.csv'
     
