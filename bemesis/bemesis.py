@@ -20,15 +20,20 @@ def getcsv(host, uname, pword, dataset, date, filecopypath):
        
     
         sftp = ssh.open_sftp()
+        print('SSH Connection Made')
      
     
         file_remote='outgoing/'+ dataset + '_'+ date + '.csv'
+
+        print(file_remote)
     
         sftp.get(file_remote, filecopypath)
+        print('File Identified in SFTP')
 
         sftp.close()
       
         ssh.close()
+        print('SSH Connection Closed')
     
         
 
@@ -40,15 +45,19 @@ def getjson(host, uname, pword, dataset, date, filecopypath):
         ssh.connect(hostname=host, username=uname, password=pword)
       
         sftp = ssh.open_sftp()
+        print('SSH Connection Made')
        
     
         file_remote='outgoing/'+ dataset + date + '.json'
+        print(file_remote)
     
         sftp.get(file_remote, filecopypath)
+        print('File Identified in SFTP')
 
         sftp.close()
     
         ssh.close()
+        print('SSH Connection Closed')
       
         
 def loadjson(f):
@@ -62,6 +71,7 @@ def getcsvtodf(host, uname, pword, dataset, date, filecopypath):
     ssh.load_system_host_keys() 
     ssh.connect(hostname=host, username=uname, password=pword)
     sftp = ssh.open_sftp()
+    
     file_remote='/Users/paul/data/'+ dataset + date + '.csv'
     sftp.get(file_remote, filecopypath)
     sftp.close()
