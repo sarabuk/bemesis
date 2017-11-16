@@ -1,88 +1,110 @@
 
-# coding: utf-8
-
-# In[19]:
-
-
 import paramiko
 import pandas as pd
 import numpy as np
 import simplejson as json
 import collections
 import time
-
+import zipfile
+import os
 
 def getcsv(host, uname, pword, dataset, date, filecopypath):
-        
-        ssh = paramiko.SSHClient()
-        ssh.load_system_host_keys() 
-        ssh.connect(hostname=host, username=uname, password=pword)
-       
     
-        sftp = ssh.open_sftp()
-        print('SSH Connection Made')
-     
-        file_remote='/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + '.csv'
-
-        print(file_remote)
-    
-        sftp.get(file_remote, filecopypath)
-        print('File Identified in SFTP')
-
-        sftp.close()
-      
-        ssh.close()
-        print('SSH Connection Closed')
-    
+        get_remote_file(host, uname, pword, dataset, date, filecopypath, 'csv')
         
 
-def getjson(host, uname, pword, dataset, date, filecopypath):
-
+def getjson(host, uname, pword, dataset, date, filecopypath):  
+    
+        get_remote_file(host, uname, pword, dataset, date, filecopypath, 'json')
+        
+def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
+    
+    try:
 
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys() 
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=host, username=uname, password=pword)
-      
+        sftp = ssh.open_sftp()
+    
+    except:
+    
+        print('Unable to Connect ')
+    
+    else:
+        
+        print('SSH Connection Made')
+        
+    try:
+        
+        remote_file = '/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'    
+        print(remote_file)      
+        local_file = filecopypath + dataset + '_'+ date + '.' + file_type + '.zip'  
+        print(local_file)
+        sftp.get(remote_file, local_file)
+        
+    except:
+        print ('Error: can\'t find file or read data')
+    
+    else:
+        print('File Copied')  
+        
+    try:
+        sftp.close()      
+        ssh.close()  
+        
+    except:
+        print ('connection was not closed')
+    
+    else:
+        print('SSH Connection Closed')  
+    
+    try:
+        pickup_zip=zipfile.ZipFile(local_file, 'r')
+        pickup_zip.extractall(filecopypath) 
+        os.remove(local_file)
+        
+    except:
+        print ('zip file not found')
+  
+    else:
+        print ('Copy Complete')
+    
+def get(host, uname, pword, dataset, date, view_type):
+    
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.load_system_host_keys() 
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname=host, username=uname, password=pword)
         sftp = ssh.open_sftp()
         print('SSH Connection Made')
-       
     
-        file_remote='/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + date + '.json'
-        
-        print(file_remote)
-    
-        sftp.get(file_remote, filecopypath)
-        print('File Identified in SFTP')
+        if view_type == 'df':
+            file_extension = '.csv'
+        if view_type == 'json':
+            file_extension = '.json.csv'
 
-        sftp.close()
-    
+        remote_filename = '/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + file_extension 
+
+        
+        remote_file_handle = sftp.open(remote_filename)
+        
+        if view_type == 'df':
+            return_value = pd.read_csv(remote_file_handle)
+        if view_type == 'json':
+            return_value = json.load(remote_file_handle)
+            
+        remote_file_handle.close()
         ssh.close()
-        print('SSH Connection Closed')
-      
         
-def loadjson(f):
-    with open (f) as f:
-        file = json.load(f)
-    return file
+    except:
+        print ('error in populating object for view')
+    
+    else:
+        return return_value
 
-    
-def getcsvtodf(host, uname, pword, dataset, date, filecopypath):
-    ssh = paramiko.SSHClient()
-    ssh.load_system_host_keys() 
-    ssh.connect(hostname=host, username=uname, password=pword)
-    sftp = ssh.open_sftp()
-    
-    file_remote='/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + '.csv'
-    
-    sftp.get(file_remote, filecopypath)
-    sftp.close()
-    ssh.close()
-    df=pd.read_csv(filecopypath + dataset + date + '.csv' )
-    
-    return df
-    
    
-    
 def jsondatatodf(path, data):
     
     if data=='cc':
@@ -227,18 +249,5 @@ def jsondatatodf(path, data):
         results=pd.merge(final_brand, final_post, how='outer', on=["brand_id"])
         
         return results
-        
-    
-
-
-# In[38]:
-
-#getcsv('192.168.200.239', 'Paul','bmotest','cc','20170925','/Users/kiransarabu/Documents/test.csv')
-#loadjson('/Users/kiransarabu/AnacondaProjects/tribe_data_mp_2.json')
-#jsondatatodf('/Users/kiransarabu/AnacondaProjects/tribe_data_mp_2.json', 'tribe')
-
-
-# In[ ]:
-
 
 
