@@ -1,4 +1,3 @@
-
 import paramiko
 import pandas as pd
 import numpy as np
@@ -104,55 +103,9 @@ def get(host, uname, pword, dataset, date, view_type):
     else:
         return return_value
 
-   
+
+    
 def jsondatatodf(path, data):
-    
-    if data=='cc':
-        with open (path) as f:
-            data = json.load(f)
-    
-        cust_colnames = {}
-        for i in range(len(data['columns'][0:115])):
-            cust_colnames[i]=list(data['columns'][0:115][i].values())[1]
-        cust_colnames=list(cust_colnames.values())
-    
-        acct_colnames = {}
-        for i in range(len(data['columns'][115:116][0][0:397])):
-            acct_colnames[i]=list(data['columns'][115:116][0][0:397][i].values())[1]
-        acct_colnames=list(acct_colnames.values())
-
-        tran_colnames = {}
-        for i in range(len(data['columns'][0:116][115][397])):
-            tran_colnames[i]=list(data['columns'][0:116][115][397][i].values())[1]
-        tran_colnames=list(tran_colnames.values())
-
-        cust_df = {}
-        acct_df = {}
-        tran_df = {}
-        result = []
-
-        for i in range(len(data['datatable']['data'])):
-            cust_df[i]= pd.DataFrame(data['datatable']['data'][i][:115:]).transpose()
-            cust_df[i].columns=cust_colnames
-            cust_id = []
-            for j in range(0,len(data['datatable']['data'][i][115])):
-                acct_df[j]=pd.DataFrame(data['datatable']['data'][i][115][j][:397]).transpose()
-                cust_id.append(data['datatable']['data'][i][0])
-                acct_df[j].columns=acct_colnames
-                acct_df[j]['cust_id']=data['datatable']['data'][i][0]
-                for k in range(len(data['datatable']['data'][i][115][j][397])):
-                    tran_df[k]=pd.DataFrame(data['datatable']['data'][i][115][j][397][k]).transpose()
-                    acct_id=data['datatable']['data'][i][115][j][0]
-                    cust_id_t=data['datatable']['data'][i][0]
-                    tran_df[k].columns=tran_colnames
-                    tran_df[k]['cust_id'] = cust_id_t
-                    tran_df[k]['acct_id'] = acct_id
-                    result.append(pd.merge((pd.merge(acct_df[j], tran_df[k], on=["cust_id","acct_id"])), 
-                                   cust_df[i], on='cust_id'))
-            results=pd.concat(result)
-        
-        return results  
-        
     
     if data=='tribe':
         with open (path) as f:
@@ -167,7 +120,7 @@ def jsondatatodf(path, data):
         for i in range(len(data['columns'][5:6][0])):
             post_colnames[i]=list(data['columns'][5:6][0][i].values())[0]
         post_colnames=list(post_colnames.values())
-
+    
         brand_df_one={}
         brand_df=[]
         brand_df_II=[]
@@ -182,16 +135,15 @@ def jsondatatodf(path, data):
         
             if len(data['datatable']['data'][i]) <= 6 and len(data['datatable']['data'][i][5]) > 1:
         
-                for j in range(len(data['datatable']['data'][i][5])):
-                    post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5][j]).transpose()
-                    post_df_one[i].columns=post_colnames
-                    post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
+            for j in range(len(data['datatable']['data'][i][5])):
+                post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5][j]).transpose()
+                post_df_one[i].columns=post_colnames
+                post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
             
             if len(data['datatable']['data'][i]) <= 6:
-                for j in range(len(data['datatable']['data'][i][5])):
-                    post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5][j]).transpose()
-                    post_df_one[i].columns=post_colnames
-                    post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
+                post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5])
+                post_df_one[i].columns=post_colnames
+                post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
             
             if len(data['datatable']['data'][i]) <= 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]) == 1:
                 post_loc=len(data['datatable']['data'][i])-1
@@ -200,13 +152,11 @@ def jsondatatodf(path, data):
                 post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
     
             if len(data['datatable']['data'][i]) <= 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]) > 1:
-                for m in range(0, (len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]))):
-                    post_loc=len(data['datatable']['data'][i])-1
-                    post_df_two[m]=pd.DataFrame(data['datatable']['data'][i][post_loc][m]).transpose()
-                    post_df_two[m].columns=post_colnames
-                    post_df_two[m]['brand_id']=data['datatable']['data'][i][0]
-            
-            
+                post_loc=len(data['datatable']['data'][i])-1
+                post_df_two[i]=pd.DataFrame(data['datatable']['data'][i][post_loc])
+                post_df_two[m].columns=post_colnames
+                post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
+              
                   
             if len(data['datatable']['data'][i]) > 6: 
         
@@ -215,17 +165,18 @@ def jsondatatodf(path, data):
                     brand_df_II.append(data['datatable']['data'][i][4+h])
             
             if len(data['datatable']['data'][i]) > 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]) > 1:
-                for m in range(0, (len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]))):
-                    post_loc=len(data['datatable']['data'][i])-1
-                    post_df_two[m]=pd.DataFrame(data['datatable']['data'][i][post_loc][m]).transpose()
-                    post_df_two[m].columns=post_colnames
-                    post_df_two[m]['brand_id']=data['datatable']['data'][i][0]
+
+                post_loc=len(data['datatable']['data'][i])-1
+                post_df_two[i]=pd.DataFrame(data['datatable']['data'][i][post_loc])
+                post_df_two[m].columns=post_colnames
+                post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
 
             if len(data['datatable']['data'][i]) > 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1])==1:
                 post_loc=len(data['datatable']['data'][i])-1
                 post_df_two[i]=pd.DataFrame(data['datatable']['data'][i][post_loc])
                 post_df_two[i].columns=post_colnames
                 post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
+    
             
 
         brandI=pd.concat(brand_df_one)
@@ -249,5 +200,3 @@ def jsondatatodf(path, data):
         results=pd.merge(final_brand, final_post, how='outer', on=["brand_id"])
         
         return results
-
-
