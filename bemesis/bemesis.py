@@ -105,7 +105,7 @@ def get(host, uname, pword, dataset, date, view_type):
 
 
     
-def jsondatatodf(path):
+def jsondatatodf(path, data):
     
     if data=='tribe':
         with open (path) as f:
