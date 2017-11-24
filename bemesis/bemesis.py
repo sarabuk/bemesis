@@ -134,11 +134,11 @@ def jsondatatodf(path, data):
                 brand_df_one[i]=pd.DataFrame(data['datatable']['data'][i][:5]).transpose()
         
             if len(data['datatable']['data'][i]) <= 6 and len(data['datatable']['data'][i][5]) > 1:
-        
-            for j in range(len(data['datatable']['data'][i][5])):
-                post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5][j]).transpose()
-                post_df_one[i].columns=post_colnames
-                post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
+
+                    for j in range(len(data['datatable']['data'][i][5])):
+                        post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5][j]).transpose()
+                        post_df_one[i].columns=post_colnames
+                        post_df_one[i]['brand_id']=data['datatable']['data'][i][0]
             
             if len(data['datatable']['data'][i]) <= 6:
                 post_df_one[i]=pd.DataFrame(data['datatable']['data'][i][5])
@@ -154,7 +154,7 @@ def jsondatatodf(path, data):
             if len(data['datatable']['data'][i]) <= 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1]) > 1:
                 post_loc=len(data['datatable']['data'][i])-1
                 post_df_two[i]=pd.DataFrame(data['datatable']['data'][i][post_loc])
-                post_df_two[m].columns=post_colnames
+                post_df_two[i].columns=post_colnames
                 post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
               
                   
@@ -168,7 +168,7 @@ def jsondatatodf(path, data):
 
                 post_loc=len(data['datatable']['data'][i])-1
                 post_df_two[i]=pd.DataFrame(data['datatable']['data'][i][post_loc])
-                post_df_two[m].columns=post_colnames
+                post_df_two[i].columns=post_colnames
                 post_df_two[i]['brand_id']=data['datatable']['data'][i][0]
 
             if len(data['datatable']['data'][i]) > 6 and len(data['datatable']['data'][i][len(data['datatable']['data'][i])-1])==1:
