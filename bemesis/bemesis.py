@@ -77,7 +77,7 @@ def get(host, uname, pword, dataset, date, view_type):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=host, username=uname, password=pword)
         sftp = ssh.open_sftp()
-        print('SSH Connection Made')
+        
     
         if view_type == 'df':
             file_extension = '.csv'
@@ -91,6 +91,9 @@ def get(host, uname, pword, dataset, date, view_type):
         
         if view_type == 'df':
             return_value = pd.read_csv(remote_file_handle)
+            return_value = return_value.replace(np.nan, '', regex=True)
+            return_value = return_value.replace('None', '', regex=True)
+            
         if view_type == 'json':
             return_value = json.load(remote_file_handle)
             
@@ -198,5 +201,7 @@ def jsondatatodf(path, data):
         final_post=pd.concat([postII, postI])
 
         results=pd.merge(final_brand, final_post, how='outer', on=["brand_id"])
+        results=results.replace(np.nan, '', regex=True)
+        results = results.replace('None', '', regex=True)
         
         return results
