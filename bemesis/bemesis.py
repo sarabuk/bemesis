@@ -101,7 +101,16 @@ def get(host, uname, pword, dataset, date, view_type):
         ssh.close()
         
     except:
-        print ('error in populating object for view')
+        print ('File Not Found')
+
+    except IOError:
+            print('An error occurred trying to read the file.')
+
+    except ValueError:
+            print('Non-numeric data found in the file.')
+
+    except ImportError:
+            print ('No module found')
     
     else:
         return return_value
@@ -109,7 +118,7 @@ def get(host, uname, pword, dataset, date, view_type):
 
     
 def jsondatatodf(path, data):
-    
+
     if data=='tribe':
         with open (path) as f:
             data = json.load(f)
@@ -203,5 +212,7 @@ def jsondatatodf(path, data):
         results=pd.merge(final_brand, final_post, how='outer', on=["brand_id"])
         results=results.replace(np.nan, '', regex=True)
         results = results.replace('None', '', regex=True)
+
+        results = results.drop_duplicates()
         
         return results
