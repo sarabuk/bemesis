@@ -3,7 +3,7 @@ from setuptools import setup
 
 install_requires = [
     'pandas >= 0.14',
-    'numpy >= 1.8',
+    'numpy >= 2.0',
     'simplejson >= 3.11',
     'paramiko >= 2.3'
 ]
