@@ -12,7 +12,7 @@ install_requires = [
 setup(
   name = 'bemesis',
   packages = ['bemesis'], # this must be the same as the name above
-  version = '3.1',
+  version = '3.2',
   description = 'test lib',
   author = 'bemesis team',
   author_email = 'genesis@genesis.com',
