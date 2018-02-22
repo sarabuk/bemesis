@@ -84,8 +84,11 @@ def get(host, uname, pword, dataset, date, view_type):
             file_extension = '.csv'
         if view_type == 'json':
             file_extension = '.json.csv'
+        
+        uname = uname
+        uname = uname.replace("sftp_ext","").title() 
 
-        remote_filename = '/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + file_extension 
+        remote_filename = '/Home/GENESIS/'+uname+'/outgoing/'+ dataset + '_'+ date + file_extension   
 
         
         remote_file_handle = sftp.open(remote_filename)
