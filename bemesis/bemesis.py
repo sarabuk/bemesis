@@ -35,8 +35,9 @@ def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
         print('SSH Connection Made')
         
     try:
-        
-        remote_file = 'outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'    
+        uname = uname
+        uname = uname.replace("sftp_ext","").title() 
+        remote_file = '/Home/GENESIS/'+uname+'outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'
         print(remote_file)      
         local_file = filecopypath + dataset + '_'+ date + '.' + file_type + '.zip'  
         print(local_file)
