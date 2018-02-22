@@ -36,7 +36,7 @@ def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
         
     try:
         
-        remote_file = '/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'    
+        remote_file = 'outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'    
         print(remote_file)      
         local_file = filecopypath + dataset + '_'+ date + '.' + file_type + '.zip'  
         print(local_file)
