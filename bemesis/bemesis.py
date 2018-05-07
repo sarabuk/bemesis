@@ -88,7 +88,8 @@ def get(host, uname, pword, dataset, date, view_type):
         uname = uname
         uname = uname.replace("sftp_ext","").title() 
 
-        remote_filename = '/Home/GENESIS/'+uname+'/outgoing/'+ dataset + '_'+ date + file_extension   
+        #remote_filename = '/Home/GENESIS/'+uname+'/outgoing/'+ dataset + '_'+ date + file_extension   
+        remote_filename = '~/outgoing/'+ dataset + '_'+ date + file_extension 
 
         
         remote_file_handle = sftp.open(remote_filename)
