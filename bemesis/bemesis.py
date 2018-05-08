@@ -25,6 +25,11 @@ def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=host, username=uname, password=pword)
         sftp = ssh.open_sftp()
+        
+        if file_type == 'csv':
+            file_extension = '.csv.zip'
+        if file_type == 'json':
+            file_extension = '.json.csv'
     
     except:
     
@@ -35,13 +40,13 @@ def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
         print('SSH Connection Made')
         
     try:
-        uname = uname
-        uname = uname.replace("sftp_ext","").title() 
-        remote_file = '/Home/GENESIS/'+uname+'/outgoing/'+ dataset + '_'+ date + '.' + file_type + '.zip'
-        print(remote_file)      
+        
+        #uname = uname
+        #uname = uname.replace("sftp_ext","").title() 
+        sftp.chdir('outgoing')
+        remote_filename = dataset + '_' + date + file_extension    
         local_file = filecopypath + dataset + '_'+ date + '.' + file_type + '.zip'  
-        print(local_file)
-        sftp.get(remote_file, local_file)
+        sftp.get(remote_filename, local_file)
         
     except:
         print ('Error: can\'t find file or read data')
@@ -54,7 +59,7 @@ def get_remote_file(host, uname, pword, dataset, date, filecopypath, file_type):
         ssh.close()  
         
     except:
-        print ('connection was not closed')
+        print ('Connection was not closed')
     
     else:
         print('SSH Connection Closed')  
@@ -84,12 +89,11 @@ def get(host, uname, pword, dataset, date, view_type):
             file_extension = '.csv'
         if view_type == 'json':
             file_extension = '.json.csv'
-        
-        uname = uname
-        uname = uname.replace("sftp_ext","").title() 
 
-        #remote_filename = '/Home/GENESIS/'+uname+'/outgoing/'+ dataset + '_'+ date + file_extension   
-        remote_filename = '~/outgoing/'+ dataset + '_'+ date + file_extension 
+        sftp.chdir('outgoing')
+        remote_filename = dataset + '_' + date + file_extension   
+
+        #remote_filename = '/Home/GENESIS/'+ uname +'/outgoing/'+ dataset + '_'+ date + file_extension 
 
         
         remote_file_handle = sftp.open(remote_filename)
@@ -107,15 +111,6 @@ def get(host, uname, pword, dataset, date, view_type):
         
     except:
         print ('File Not Found')
-
-    except IOError:
-            print('An error occurred trying to read the file.')
-
-    except ValueError:
-            print('Non-numeric data found in the file.')
-
-    except ImportError:
-            print ('No module found')
     
     else:
         return return_value
